@@ -86,6 +86,12 @@ body {
     color: #ffffff;
 }
 
+/* negate button - make it look like a number */
+.btn.function[data-action="negate"] {
+    background: #333333;
+    color: #ffffff;
+}
+
 .btn.operation.active {
     background: #ffffff;
     color: #ff9f0a;

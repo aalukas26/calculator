@@ -68,3 +68,60 @@ function handleFunction(action) {
 function updateDisplay() {
     display.textContent = currentValue;
 }
+
+async function handleOperation(action) {
+    if(action === 'equals') {
+        if(previousValue !== null && operation !== null) {
+            await calculate(true);
+        }
+    } else {
+        if(previousValue === null) {
+            previousValue = currentValue;
+            operation = action;
+            resetdisplay = true;
+        } else if (operation) {
+            await calculate(false);
+            operation = action;
+        }
+    }
+}
+
+async function calculate(isFinal) {
+    const num1 = parseFloat(previousValue);
+    const num2 = parseFloat(currentValue);
+
+    try {
+        const response = await fetch('http://localhost:3000/api/calculate',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                num1: num1,
+                num2: num2,
+                operation: operation
+            })
+        });
+
+        const data = await response.json();
+
+        if(response.ok) {
+            currentValue = String(data.result);
+            if(isFinal) {
+                previousValue = null;
+                operation = null;
+            } else {
+                previousValue = String(data.result);
+            }
+
+            resetdisplay = true;
+            updateDisplay();
+        } else {
+            alert(data.error);
+        }
+    } catch (error) {
+        alert('Cannot connect to server.');
+        console.error(error);
+    }
+
+}
