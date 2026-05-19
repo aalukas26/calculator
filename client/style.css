@@ -80,6 +80,12 @@ body {
     color: #000000;
 }
 
+/* Decimal button - make it look like a number */
+.btn.function[data-action="decimal"] {
+    background: #333333;
+    color: #ffffff;
+}
+
 .btn.operation.active {
     background: #ffffff;
     color: #ff9f0a;
